@@ -1,0 +1,101 @@
+/* 声迹苏州 · 画面优化层（叠加在原样式之上，不改交互逻辑） */
+:root{--paper2:#efe8d8;--ink-wash:rgba(11,101,98,.09)}
+.screen:not([data-screen='home']){isolation:isolate;background:linear-gradient(180deg,#f8f3e9 0%,#f0eadb 100%)}
+.screen:not([data-screen='home'])::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 90% 5%,rgba(232,180,78,.26),transparent 32%),radial-gradient(circle at 2% 58%,rgba(14,139,127,.11),transparent 42%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 300' preserveAspectRatio='none'%3E%3Cpath d='M0 130 C110 70 190 190 330 120 S550 80 640 140 V300 H0Z' fill='%230b6562' fill-opacity='.07'/%3E%3Cpath d='M0 185 C120 135 210 235 350 178 S565 142 640 192 V300 H0Z' fill='%230b6562' fill-opacity='.09'/%3E%3Cpath d='M0 238 C130 200 230 262 370 226 S580 205 640 240 V300 H0Z' fill='%23d66e50' fill-opacity='.07'/%3E%3C/svg%3E") bottom center/100% 320px no-repeat}
+.screen:not([data-screen='home'])::after{content:'';position:absolute;right:-70px;top:150px;width:220px;height:220px;border-radius:50%;z-index:-1;pointer-events:none;border:1px solid rgba(11,101,98,.14);box-shadow:0 0 0 22px rgba(11,101,98,.035),0 0 0 48px rgba(11,101,98,.025)}
+.screen.active{animation:screenIn .55s cubic-bezier(.2,.7,.2,1) both}
+@keyframes screenIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.nav .step{margin-right:54px;letter-spacing:.06em}
+.kicker{letter-spacing:.2em;font-weight:700}
+.page-title{letter-spacing:-.02em;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.btn{border-radius:16px}
+.btn-primary{background:linear-gradient(135deg,#f0c35f 0%,#e8b44e 55%,#dba03a 100%);box-shadow:0 10px 24px rgba(214,150,50,.32),inset 0 1px 0 rgba(255,255,255,.45)}
+.btn-primary:active{box-shadow:0 4px 12px rgba(214,150,50,.28)}
+.btn-ghost{backdrop-filter:blur(6px);background:rgba(255,255,255,.06)}
+.station-actions .btn[disabled],.btn[disabled]{opacity:1;background:#e6dfcd;color:#a19b86;box-shadow:none;cursor:not-allowed}
+.choice,.timeline-node,.mode-card,.route-card{box-shadow:0 8px 22px rgba(16,38,41,.07);transition:transform .18s,box-shadow .18s,border-color .18s}
+.choice:active,.timeline-node:active{transform:scale(.985)}
+.choice:hover,.timeline-node:hover{box-shadow:0 12px 28px rgba(16,38,41,.11)}
+.audio-box{background:linear-gradient(135deg,#e3efe7,#d6e8de);box-shadow:0 10px 26px rgba(11,101,98,.10)}
+.audio-button{box-shadow:0 8px 18px rgba(11,101,98,.35)}
+.task{box-shadow:0 8px 22px rgba(232,180,78,.12)}
+.station-visual{box-shadow:0 16px 36px rgba(16,38,41,.20)}
+.station-tag{backdrop-filter:blur(8px);background:rgba(16,38,41,.46)}
+.visual-status:not(.error){display:none}
+.route-map{background:linear-gradient(160deg,#d9ebe3,#cfe3da);box-shadow:inset 0 0 0 1px rgba(11,101,98,.12),0 14px 32px rgba(16,38,41,.08)}
+.route-map .node{background:transparent;box-shadow:none}
+.route-map .node i{background:#fffaf0;box-shadow:0 8px 18px rgba(214,110,80,.28)}
+.seal{background:radial-gradient(circle at 35% 28%,#fffdf6 0%,#fbf0d3 62%,#f1dca4 100%);box-shadow:0 26px 52px rgba(214,150,50,.30),0 0 0 10px rgba(232,180,78,.14),inset 0 0 0 7px rgba(232,180,78,.22);animation:sealFloat 5s ease-in-out infinite alternate}
+@keyframes sealFloat{to{transform:translateY(-6px) rotate(-1.2deg)}}
+.progress-dot.done,.stepper i.done{box-shadow:0 2px 8px rgba(214,110,80,.4)}
+@media(prefers-reduced-motion:reduce){.screen.active,.seal{animation:none}}
+/* 声音按钮：SVG 图标，由 .off 类控制显示 */
+.sound-toggle{display:grid;place-items:center;padding:0;font-size:0;background:rgba(255,250,240,.92);backdrop-filter:blur(8px);box-shadow:0 8px 20px rgba(16,38,41,.16)}
+.sound-toggle svg{display:block}
+.sound-toggle .ic-off{display:none}
+.sound-toggle.off .ic-on{display:none}
+.sound-toggle.off .ic-off{display:block}
+/* 全局动态视频背景：低码率循环 + 浅色调罩层，内容用毛玻璃卡片承载 */
+.bg-stage{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#cfe3da;pointer-events:none}
+.bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.85) blur(3px);transform:scale(1.06)}
+.bg-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(244,240,228,.80) 0%,rgba(226,238,230,.86) 55%,rgba(210,230,222,.90) 100%)}
+.app{background:transparent}
+.screen:not([data-screen='home']){background:transparent}
+.choice,.task,.audio-box,.timeline-node,.subtitle-panel,.water-listen-controls,.route-map{background-color:rgba(255,250,240,.72);backdrop-filter:blur(12px) saturate(1.1);-webkit-backdrop-filter:blur(12px) saturate(1.1);border-color:rgba(255,255,255,.55)}
+.audio-box{background:linear-gradient(135deg,rgba(227,239,231,.78),rgba(214,232,222,.78))}
+.route-map{background:linear-gradient(160deg,rgba(217,235,227,.7),rgba(207,227,218,.7))}
+.choice-mark,.history-entry{backdrop-filter:none}
+@media(min-width:640px){.bg-stage{left:50%;right:auto;width:640px;transform:translateX(-50%)}}
+/* 站点页紧凑化：消除 640x1030 画布内的溢出 */
+.screen[data-station]{padding-top:20px;padding-bottom:22px}
+.screen[data-station] .nav{margin-bottom:16px}
+.screen[data-station] .page-title{margin:8px 0 10px}
+.screen[data-station] .audio-box{padding:12px 15px}
+.screen[data-station] .choice{padding:11px 16px}
+.screen[data-station] .choice-grid{gap:9px}
+.screen[data-station] .task{padding:12px 16px}
+.screen[data-station] .task-status{margin-top:8px;margin-bottom:8px}
+.screen[data-station] .btn-block{margin-top:10px}
+/* 背景视频更通透：罩层减淡、取消模糊 */
+.bg-video{filter:saturate(1.05);transform:scale(1.04)}
+.bg-tint{background:linear-gradient(180deg,rgba(244,240,228,.50) 0%,rgba(226,238,230,.58) 55%,rgba(210,230,222,.68) 100%)}
+/* 修复：html/body 不透明底色盖住了 z-index:-1 的视频背景层 */
+html,body{background:transparent}
+.bg-stage{z-index:-1}
+body{position:relative;z-index:0}
+.bg-stage{background:#cfe3da}
+/* 按页面切换的主题背景视频：淡入淡出，同一时间只显示一条 */
+.bg-video{opacity:0;transition:opacity .8s ease}
+.bg-video.on{opacity:1}
+/* 可读性：顶部托底渐变 + 小标题加深 */
+.screen:not([data-screen='home'])>.nav,.screen:not([data-screen='home'])>.kicker,.screen:not([data-screen='home'])>.page-title{position:relative;z-index:1}
+.screen:not([data-screen='home'])>.nav::before{content:'';position:absolute;left:-24px;right:-24px;top:-40px;height:190px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(248,244,232,.86) 0%,rgba(248,244,232,.62) 55%,rgba(248,244,232,0) 100%)}
+.nav-back,.nav .step{color:#2f4a4d;font-weight:700}
+.kicker{color:#c4573a;font-weight:800;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.page-title{color:#0d2528;text-shadow:0 1px 0 rgba(255,255,255,.75),0 0 18px rgba(248,244,232,.9)}
+.page-copy,.task-status,.footer-note{color:#35575a}
+.screen[data-screen='seal'] .page-copy,.screen[data-screen='seal'] p{text-shadow:0 0 12px rgba(248,244,232,.95)}
+/* 站点页备用动画卡片：背景视频在播时更通透 */
+.station-visual.cinematic-ready{background:rgba(16,47,53,.72);backdrop-filter:blur(6px)}
+.station-visual>svg{opacity:.1}
+/* 站点卡片：备用动画层调淡，让背景视频透出；涟漪画布与点击逻辑不变 */
+.station-visual.cinematic-ready{background:rgba(16,47,53,.28);backdrop-filter:none;border:1px solid rgba(255,255,255,.5)}
+.station-visual>.cinematic-canvas{opacity:.34;mix-blend-mode:screen}
+.station-visual>svg{opacity:.06}
+.station-visual:after{opacity:.2}
+.station-tag{background:rgba(16,38,41,.58)}
+/* 声章：印章质感（双层金环 + 刻度外圈 + 朱红细线 + 光泽） */
+.seal{width:224px;height:224px;border:0;background:radial-gradient(circle at 34% 26%,#fffefa 0%,#fdf3d8 58%,#f3dfae 100%);box-shadow:0 28px 54px rgba(214,150,50,.30),0 0 0 3px #e8b44e,0 0 0 9px rgba(255,250,240,.9),0 0 0 11px rgba(232,180,78,.55),inset 0 0 0 6px rgba(232,180,78,.18),inset 0 2px 10px rgba(255,255,255,.9)}
+.seal:before{inset:14px;border:1.5px solid rgba(214,110,80,.55);border-style:solid}
+.seal:after{inset:24px;border:1px dashed rgba(232,180,78,.9)}
+.seal-text{text-shadow:0 1px 0 rgba(255,255,255,.8)}
+.seal-text strong{color:#102629;letter-spacing:.1em}
+.seal-text span{color:#c4573a;font-weight:700}
+.seal-text small{color:#35575a;font-weight:600}
+.seal .seal-text:before{content:'';position:absolute;left:50%;top:-52px;width:70px;height:2px;margin-left:-35px;background:linear-gradient(90deg,transparent,#e8b44e,transparent)}
+/* 路线图圆点：轻微呼吸，三点错开 */
+.route-map .node i{animation:nodeBreath 3.2s ease-in-out infinite}
+.route-map .node.two i{animation-delay:-1.1s}
+.route-map .node.three i{animation-delay:-2.1s}
+@keyframes nodeBreath{0%,100%{box-shadow:0 8px 18px rgba(214,110,80,.28),0 0 0 0 rgba(214,110,80,.30)}50%{box-shadow:0 8px 18px rgba(214,110,80,.28),0 0 0 9px rgba(214,110,80,0)}}
+@media(prefers-reduced-motion:reduce){.route-map .node i{animation:none}}
