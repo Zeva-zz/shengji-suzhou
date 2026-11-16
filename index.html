@@ -131,10 +131,10 @@
   if(mobileOpenNote && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) && location.protocol==='file:'){mobileOpenNote.style.display='block';setTimeout(()=>{mobileOpenNote.style.display='none'},9000)}
   const localSoundFiles={water:'audio/natural/natural-water.mp3',step:'audio/natural/natural-footsteps.mp3',talk:'audio/natural/natural-street.mp3',station1:'audio/natural/natural-water.mp3',station2:'audio/natural/natural-memory.mp3',station3:'audio/natural/natural-running.mp3',breath:'audio/natural/natural-breath.mp3'};
   const voiceFiles={
-    walk:{station1:['audio/voice-original/voice-water-title.m4a','audio/voice-original/voice-water-task.m4a'],station2:['audio/voice-original/voice-memory-title.m4a','audio/voice-original/voice-memory-task.wav'],station3:['audio/voice-original/voice-energy-title.m4a','audio/voice-original/voice-energy-task.m4a']},
-    run:{station1:['audio/voice-original/voice-run-station1.wav'],station2:['audio/voice-original/voice-run-station2.wav','audio/voice-original/voice-run-station2-followup.wav'],station3:['audio/voice-original/voice-run-station3.m4a']}
+    walk:{station1:['audio/voice-original/voice-water-title.m4a','audio/voice-original/voice-water-task.m4a'],station2:['audio/voice-original/voice-memory-title.m4a','audio/voice-original/voice-memory-task-lite.m4a'],station3:['audio/voice-original/voice-energy-title.m4a','audio/voice-original/voice-energy-task.m4a']},
+    run:{station1:['audio/voice-original/voice-run-station1-lite.m4a'],station2:['audio/voice-original/voice-run-station2-lite.m4a','audio/voice-original/voice-run-station2-followup-lite.m4a'],station3:['audio/voice-original/voice-run-station3.m4a']}
   };
-  const narrationFiles={opening:'audio/voice-original/voice-opening.wav',route:'audio/voice-original/voice-route.m4a',finishWalk:'audio/voice-original/voice-finish-walk.m4a',finishRun:'audio/voice-original/voice-finish-run.m4a'};
+  const narrationFiles={opening:'audio/voice-original/voice-opening-lite.m4a',route:'audio/voice-original/voice-route.m4a',finishWalk:'audio/voice-original/voice-finish-walk.m4a',finishRun:'audio/voice-original/voice-finish-run.m4a'};
   const finishChoiceSounds={detail:'station1',memory:'station2',join:'breath'};
   const waterLabels={water:'水面与船橹',step:'桥面脚步',talk:'路过人声'};
   const waterSubtitles={water:'水声在巷口铺开，船橹从远处划过。',step:'桥面传来脚步，短促地靠近又离开。',talk:'路过的交谈忽远忽近，融进水巷日常。'};
@@ -156,7 +156,7 @@
     if(scene.attempting||(!video.paused&&video.readyState>=2))return;
     scene.attempting=true;const attemptId=++scene.attemptId;
     scene.status.textContent='动态画面加载中…';scene.status.classList.remove('error');
-    if(!scene.sourceLoaded){video.preload='auto';video.src=scene.source;scene.sourceLoaded=true;video.load()}
+    if(!scene.sourceLoaded){scene.sourceLoaded=true;if(!video.getAttribute('src')){video.preload='auto';video.src=scene.source;video.load()}}
     try{
       const playing=video.play();
       if(playing&&typeof playing.catch==='function')playing.catch(()=>{if(scene.attemptId!==attemptId)return;scene.attempting=false;setCinematicFallback(scene,'视频暂不可用，备用动画继续播放','error')});
@@ -379,5 +379,27 @@
   window.addEventListener('focus',resumeDynamicMedia);
 })();
 </script>
-<script>(function(){var vs={};document.querySelectorAll('.bg-video').forEach(function(v){vs[v.dataset.bg]=v});var c=navigator.connection||{};var off=window.matchMedia('(prefers-reduced-motion: reduce)').matches||c.saveData;if(off){Object.keys(vs).forEach(function(k){vs[k].remove()});return}var map={home:'loop',intro:'loop',mode:'loop',route:'loop',station1:'water',station2:'memory',station3:'energy',progress:'energy',seal:'energy',applications:'energy'};var src={loop:'bg-loop.mp4',water:'bg-water.mp4',memory:'bg-memory.mp4',energy:'bg-energy.mp4'};var cur=null;function play(v){var p=v.play();if(p&&p.catch)p.catch(function(){})}function use(k){if(!vs[k]||k===cur)return;Object.keys(vs).forEach(function(n){var v=vs[n];if(n===k){if(!v.getAttribute('src')){v.muted=true;v.src='video/bg/'+src[n]}v.classList.add('on');play(v)}else{v.classList.remove('on');setTimeout(function(){if(!v.classList.contains('on'))v.pause()},800)}});cur=k}function sync(){var a=document.querySelector('.screen.active');use(a?(map[a.dataset.screen]||'loop'):'loop')}Object.keys(vs).forEach(function(k){vs[k].addEventListener('error',function(){vs[k].removeAttribute('src');vs[k].classList.remove('on')})});sync();new MutationObserver(sync).observe(document.getElementById('app'),{attributes:true,subtree:true,attributeFilter:['class']});document.addEventListener('visibilitychange',function(){var v=vs[cur];if(!v)return;if(document.hidden)v.pause();else play(v)});document.addEventListener('click',function(){var v=vs[cur];if(v&&v.paused)play(v)},{once:true})})();</script></body>
+<script>(function(){var vs={};document.querySelectorAll('.bg-video').forEach(function(v){vs[v.dataset.bg]=v});var c=navigator.connection||{};var off=window.matchMedia('(prefers-reduced-motion: reduce)').matches||c.saveData;if(off){Object.keys(vs).forEach(function(k){vs[k].remove()});return}var map={home:'loop',intro:'loop',mode:'loop',route:'loop',station1:'water',station2:'memory',station3:'energy',progress:'energy',seal:'energy',applications:'energy'};var src={loop:'bg-loop.mp4',water:'bg-water.mp4',memory:'bg-memory.mp4',energy:'bg-energy.mp4'};var cur=null;function play(v){var p=v.play();if(p&&p.catch)p.catch(function(){})}function use(k){if(!vs[k]||k===cur)return;Object.keys(vs).forEach(function(n){var v=vs[n];if(n===k){if(!v.getAttribute('src')){v.muted=true;v.src='video/bg/'+src[n]}v.classList.add('on');play(v)}else{v.classList.remove('on');setTimeout(function(){if(!v.classList.contains('on'))v.pause()},800)}});cur=k}function sync(){var a=document.querySelector('.screen.active');use(a?(map[a.dataset.screen]||'loop'):'loop')}Object.keys(vs).forEach(function(k){vs[k].addEventListener('error',function(){vs[k].removeAttribute('src');vs[k].classList.remove('on')})});sync();new MutationObserver(sync).observe(document.getElementById('app'),{attributes:true,subtree:true,attributeFilter:['class']});document.addEventListener('visibilitychange',function(){var v=vs[cur];if(!v)return;if(document.hidden)v.pause();else play(v)});document.addEventListener('click',function(){var v=vs[cur];if(v&&v.paused)play(v)},{once:true})})();</script><style id="fast-load">
+/* 秒开：先显示视频首帧海报，视频加载好后无缝接上；不再显示“加载中/备用动画”提示 */
+.visual-status{display:none!important}
+.station-visual .station-video{opacity:1!important;background:#102f35 center/cover no-repeat}
+.station-visual>.cinematic-canvas{opacity:0!important}
+.screen[data-screen="home"]{background:#0c2a2d url(video/cover/cover-loop-poster.jpg) center/cover no-repeat}
+.home-cover-video{opacity:.82!important}
+</style>
+<script>(function(){
+var P=['water','memory','energy'];
+document.querySelectorAll('.screen[data-station]').forEach(function(sc){var i=+sc.dataset.station,v=sc.querySelector('.station-video');if(v&&P[i]){v.poster='video/selected/'+P[i]+'-dream-poster.jpg';v.style.backgroundImage='url(video/selected/'+P[i]+'-dream-poster.jpg)'}});
+var hc=document.querySelector('[data-home-cover]');if(hc){hc.poster='video/cover/cover-loop-poster.jpg';if(!hc.getAttribute('src')){hc.preload='auto';hc.src='video/cover/cover-loop.mp4'}}
+var c=navigator.connection||{};if(c.saveData)return;
+function bg(k){return document.querySelector('.bg-video[data-bg="'+k+'"]')}
+function st(i){var sc=document.querySelector('.screen[data-station="'+i+'"]');return sc&&sc.querySelector('.station-video')}
+var q=[[bg('water'),'video/bg/bg-water.mp4'],[st(0),'video/selected/water-dream.mp4'],[bg('memory'),'video/bg/bg-memory.mp4'],[st(1),'video/selected/memory-dream.mp4'],[bg('energy'),'video/bg/bg-energy.mp4'],[st(2),'video/selected/energy-dream.mp4']];
+function next(){var it=q.shift();if(!it)return;var v=it[0];if(!v||v.getAttribute('src')){next();return}
+var done=false;function go(){if(done)return;done=true;setTimeout(next,150)}
+v.preload='auto';v.muted=true;v.src=it[1];v.addEventListener('canplaythrough',go,{once:true});v.addEventListener('error',go,{once:true});setTimeout(go,8000);v.load()}
+function start(){setTimeout(next,600)}
+if(document.readyState==='complete')start();else window.addEventListener('load',start);
+})();</script>
+</body>
 </html>
